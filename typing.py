@@ -11,7 +11,7 @@ def get_next_example():
         return random.choice(candidates)
 
 def create_user_input_box():
-    return pygame_textinput.TextInput(antialias=True, font_family='Consolas', text_color=WHITE, cursor_color=WHITE)
+    return pygame_textinput.TextInput(antialias=True, font_family='Consolas', text_color=WHITE, cursor_color=WHITE, font_size=20)
 
 if __name__ == '__main__':
     BLACK = (0, 0, 0)
@@ -21,10 +21,10 @@ if __name__ == '__main__':
 
     user_input = create_user_input_box()
 
-    screen = pg.display.set_mode((1000, 200))
+    screen = pg.display.set_mode((1200, 200))
     clock = pg.time.Clock()
 
-    problem_description_font = pg.font.SysFont("Consolas", 30)
+    problem_description_font = pg.font.SysFont("Consolas", 20)
 
     example_text = get_next_example()
 
