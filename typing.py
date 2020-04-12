@@ -1,5 +1,6 @@
 from pygametextinput import pygame_textinput
 import pygame as pg
+import expressions
 
 # def get_next_example():
 #     import random
@@ -11,43 +12,10 @@ import pygame as pg
 #         return random.choice(candidates)
 
 def get_next_example():
-    import itertools
-
-    expression = "not a and not b"
-
-    results = []
-    for a, b in itertools.product([True, False], repeat=2):
-        results.append(eval(expression))
-
-    return (expression, results)
+    return expressions.generate_expression() 
 
 def verify():
-    import itertools
-
-    expression = user_input.input_string
-    if not any(expression):
-        # ignore empty lines
-        return (False, "")
-
-    results = []
-    for a, b in itertools.product([True, False], repeat=2):
-        results.append(eval(expression))
-
-    if results == expected:
-        return (True, "")
-    else:
-        error_reason = f'"{expression}" != "{example_text}"!    '
-        for i, combination in enumerate(itertools.product([True, False], repeat=2)):
-            if results[i] != expected[i]:
-                error_reason += f"Example faulty combination: {combination} -> {results[i]}"
-                # only add one error example
-                break
-        return (False, error_reason)
-
-
-
-    # return user_input.input_string == "if not (a or b)"
-    # return user_input.input_string == example_text
+    return expressions.expressions_are_logically_same(example_text, user_input.input_string)
 
 def create_user_input_box():
     return pygame_textinput.TextInput(antialias=True, font_family='Consolas', text_color=WHITE, cursor_color=WHITE, font_size=20)
@@ -65,7 +33,7 @@ if __name__ == '__main__':
 
     problem_description_font = pg.font.SysFont("Consolas", 20)
 
-    example_text, expected = get_next_example()
+    example_text = get_next_example()
     error_reason = ""
 
     score = 0
@@ -83,11 +51,11 @@ if __name__ == '__main__':
             if user_input.input_string == "quit":
                 exit()
 
-            is_correct, error_reason = verify()
-
-            if is_correct:
+            if verify():
                 score += 1
-                example_text, expected = get_next_example()
+                example_text = get_next_example()
+            else:
+                error_reason = expressions._error_reason
 
             # Always reset user input after enter.
             user_input = create_user_input_box()
