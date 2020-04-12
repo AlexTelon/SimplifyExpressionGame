@@ -6,7 +6,10 @@ def get_next_example():
     import random
     with open('typing.py') as f:
         lines = f.read().splitlines()
-        return random.choice(lines).strip()
+        candidates = [line.strip() for line in lines]
+        # remove empty lines
+        candidates = [line for line in candidates if any(line)]
+        return random.choice(candidates)
 
 if __name__ == '__main__':
     pg.init()
