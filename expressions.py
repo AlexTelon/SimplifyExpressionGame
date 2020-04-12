@@ -22,6 +22,13 @@ def expressions_are_logically_same(original, suggestion, names=None):
     if names is None:
         names = ['a', 'b']
 
+    if not any(original) and not any(suggestion):
+        return True
+
+    if not any(suggestion):
+        return False
+
+
     n = len(names)
 
     expected = []
