@@ -39,11 +39,14 @@ if __name__ == '__main__':
         keys = pg.key.get_pressed()
 
         if keys[pg.K_KP_ENTER]:
-            if user_input.input_string == example_text:
-                user_input = create_user_input_box()
-                example_text = get_next_example()
             if user_input.input_string == "quit":
                 exit()
+
+            if user_input.input_string == example_text:
+                example_text = get_next_example()
+            # Always reset user input after enter.
+            user_input = create_user_input_box()
+
         else:
             user_input.update(events)
             screen.blit(user_input.get_surface(), (10, 10))
