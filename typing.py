@@ -10,6 +10,9 @@ def get_next_example():
         candidates = [line for line in candidates if any(line)]
         return random.choice(candidates)
 
+def is_correct():
+    return user_input.input_string == example_text
+
 def create_user_input_box():
     return pygame_textinput.TextInput(antialias=True, font_family='Consolas', text_color=WHITE, cursor_color=WHITE, font_size=20)
 
@@ -42,8 +45,9 @@ if __name__ == '__main__':
             if user_input.input_string == "quit":
                 exit()
 
-            if user_input.input_string == example_text:
+            if is_correct():
                 example_text = get_next_example()
+
             # Always reset user input after enter.
             user_input = create_user_input_box()
 
