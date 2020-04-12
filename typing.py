@@ -34,7 +34,7 @@ if __name__ == '__main__':
 
         if keys[pg.K_KP_ENTER]:
             if textinput.input_string == example_text:
-                textinput.input_string = ""
+                textinput = pygame_textinput.TextInput(antialias=True, font_family='Consolas', text_color=WHITE, cursor_color=WHITE)
                 example_text = get_next_example()
             if textinput.input_string == "quit":
                 exit()
