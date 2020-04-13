@@ -12,7 +12,11 @@ def generate_expression():
         """Gives and or or"""
         return random.choice(['or', 'and'])
 
-    expression = f"{random_negation()}a {random_and_or_or()} {random_negation()}b"
+    def random_variable():
+        return random.choice(['a', 'b', 'True', 'False'])
+
+
+    expression = f"{random_negation()}{random_variable()} {random_and_or_or()} {random_negation()}{random_variable()}"
     # TODO add ()
     return expression
 
