@@ -58,9 +58,12 @@ def expression_in_simplest_form(original, suggestion):
     expression_in_simplest_form('a and True', 'a') -> False # (a is not equivalent. (True is the correct answer))
     """
     global _error_reason
-    # if suggestion not in _equivalence_dict:
-    #     _error_reason = f"{suggestion} not found in _equivalence_dict! (it is not a combination the program though resonable to consider.)"
-    #     return False
+    # check if suggestion is executable code.
+    try:
+        eval_expression(suggestion)
+    except (SyntaxError, NameError) as e:
+        _error_reason = f"{type(e)}: {e}"
+        return False
 
     def is_equivalent(a, b):
         a_key = eval_expression(suggestion)
