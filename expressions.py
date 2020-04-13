@@ -15,7 +15,6 @@ def generate_expression():
     def random_variable():
         return random.choice(['a', 'b', 'True', 'False'])
 
-
     expression = f"{random_negation()}{random_variable()} {random_and_or_or()} {random_negation()}{random_variable()}"
     # TODO add ()
     return expression
@@ -41,7 +40,11 @@ def expressions_are_logically_same(original, suggestion, names=None):
         context = dict(zip(names, values))
         context2 = dict(zip(names, values)) # copy just in case eval changes something
         expected.append(eval(original, globals(), context))
-        actual.append(eval(suggestion, globals(), context2))
+        try:
+            actual.append(eval(suggestion, globals(), context2))
+        except (SyntaxError, NameError) as e:
+            _error_reason = f"{type(e)}: {e}"
+            return False
 
     if actual == expected:
         return True
