@@ -74,8 +74,10 @@ def expression_in_simplest_form(original, suggestion):
     simplest = min([option for option in equivalence_options], key=len)
 
     if is_equivalent(original, suggestion):
-        # Make sure suggestion is as short as the shortest possible solution.
-        if len(suggestion) == len(simplest):
+        # TODO count the number of operators should be a better heuristic for simplicity.
+        if len(suggestion) <= len(simplest):
+            # It is technically possible to have a syntactically shorter solution:
+            # not (a or b) -> not(a or b)
             return True
         else:
             _error_reason = f'"{suggestion}" is not the shortest form "{simplest}"'
@@ -132,6 +134,13 @@ if __name__ == "__main__":
     assert(expressions_are_logically_same("not a and not b", "not (b or a)"))
 
 
-    print("Sample of generate_expressions:")
-    for i in range(10):
-        print(generate_expression())
+    # print("Sample of generate_expressions:")
+    # for i in range(10):
+    #     print(generate_expression())
+
+    # from pprint import pprint
+    # pprint(_all_possible_expressions)
+
+    # Allow for a shortcut in the simplest form by removing whitespace.
+    assert(expression_in_simplest_form("not a or not b", "not (a and b)"))
+    assert(expression_in_simplest_form("not a or not b", "not(a and b)"))
