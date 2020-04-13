@@ -15,7 +15,8 @@ def get_next_example():
     return expressions.generate_expression() 
 
 def verify():
-    return expressions.expressions_are_logically_same(example_text, user_input.input_string)
+    # return expressions.expressions_are_logically_same(example_text, user_input.input_string)
+    return expressions.expression_in_simplest_form(example_text, user_input.input_string)
 
 def create_user_input_box():
     return pygame_textinput.TextInput(antialias=True, font_family='Consolas', text_color=WHITE, cursor_color=WHITE, font_size=20)
@@ -56,6 +57,7 @@ if __name__ == '__main__':
             if verify():
                 score += 1
                 example_text = get_next_example()
+                error_reason = ""
             else:
                 error_reason = expressions._error_reason
 

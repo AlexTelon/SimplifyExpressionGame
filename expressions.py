@@ -1,5 +1,6 @@
 import itertools
 import random
+from collections import defaultdict
 
 _error_reason = ""
 
@@ -17,29 +18,65 @@ for variables in itertools.chain(itertools.product([True, False, 'a', 'b'], repe
                 _all_possible_expressions.append(exp)
 
 
+
 def generate_expression():
     return random.choice(_all_possible_expressions)
 
 
-def classify_all_possible_expressions():
-    # take all possible expressions that the user can be tasked with.
-    # Create a dictionary of equivalent ones.
-    # True, True and True, False or True, etc
-    # We want to find all expressions that are always True, False and others such that we can always inform the user if a simpler form is possible.
+def eval_expression(expression):
+    # Eval an expression on all combinations of True False for two variables
+    # Then return the results for these.
+    names = ['a', 'b']
+    result = []
+    for values in itertools.product([True, False], repeat=2):
+        context = dict(zip(names, values))
+        result.append(eval(expression, globals(), context))
+    return tuple(result)
 
-    # Solution 1:
-    # Start with an expression True, then apply different rules to it such that a bunch of resonably longer forms are found.
 
-    # Solution 2:
-    # Make the generator of expressions one based on a full list of expressions and it returns a random one of those.
-    # That way we can go over each possible expression one by one.
-    # Then using a truth table find all equivalence classes.
+def build_equivalence_dict():
+    table = defaultdict(list)
+    for exp in _all_possible_expressions:
+        key = eval_expression(exp)
+        table[key].append(exp)
 
-    def expressions():
-        pass
+    return table
 
-    pass
+_equivalence_dict = build_equivalence_dict()
 
+
+def expression_in_simplest_form(original, suggestion):
+    """Returns False if suggestion is not equivalent and in the shortest form of original.
+    
+    Example:
+    
+    expression_in_simplest_form('True and not False', 'True') -> True
+    expression_in_simplest_form('a and a', 'a and a') -> False # (a is the shortest form)
+    expression_in_simplest_form('a and True', 'a') -> False # (a is not equivalent. (True is the correct answer))
+    """
+    global _error_reason
+    # if suggestion not in _equivalence_dict:
+    #     _error_reason = f"{suggestion} not found in _equivalence_dict! (it is not a combination the program though resonable to consider.)"
+    #     return False
+
+    def is_equivalent(a, b):
+        a_key = eval_expression(suggestion)
+        b_key = eval_expression(original)
+        return a_key == b_key
+    
+    equivalence_options = _equivalence_dict[eval_expression(original)]
+    simplest = min([option for option in equivalence_options], key=len)
+
+    if is_equivalent(original, suggestion):
+        # Make sure suggestion is the shortest one.
+        if suggestion == simplest:
+            return True
+        else:
+            _error_reason = f'"{suggestion}" is not the shortest form "{simplest}"'
+            return False
+    else:
+        _error_reason = f'"{suggestion}" is not equivalent to "{original}" == "{simplest}"'
+        return False
 
 
 def expressions_are_logically_same(original, suggestion, names=None):
