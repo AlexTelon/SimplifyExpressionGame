@@ -71,8 +71,8 @@ def expression_in_simplest_form(original, suggestion):
     simplest = min([option for option in equivalence_options], key=len)
 
     if is_equivalent(original, suggestion):
-        # Make sure suggestion is the shortest one.
-        if suggestion == simplest:
+        # Make sure suggestion is as short as the shortest possible solution.
+        if len(suggestion) == len(simplest):
             return True
         else:
             _error_reason = f'"{suggestion}" is not the shortest form "{simplest}"'
