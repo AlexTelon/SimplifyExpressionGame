@@ -4,10 +4,17 @@ import random
 _error_reason = ""
 
 _all_possible_expressions = []
-for variables in itertools.product([True, False, 'a', 'b'], repeat=2):
-    for unary in itertools.product(['not ', ''], repeat=2):
-        for binary in ['or', 'and']:
-            _all_possible_expressions.append(f"{unary[0]}{variables[0]} {binary} {unary[1]}{variables[1]}")
+# Two or one variables. Eg: (True, 'a'), (True), ('a', 'a'), ('a', 'b')
+for variables in itertools.chain(itertools.product([True, False, 'a', 'b'], repeat=2), itertools.product([True, False, 'a', 'b'], repeat=1)):
+    if len(variables) == 1:
+        for unary in ['not ', '']:
+            exp = f"{unary}{variables[0]}"
+            _all_possible_expressions.append(exp)
+    else:
+        for unary in itertools.product(['not ', ''], repeat=2):
+            for binary in ['or', 'and']:
+                exp = f"{unary[0]}{variables[0]} {binary} {unary[1]}{variables[1]}"
+                _all_possible_expressions.append(exp)
 
 
 def generate_expression():
@@ -32,7 +39,7 @@ def classify_all_possible_expressions():
         pass
 
     pass
-    
+
 
 
 def expressions_are_logically_same(original, suggestion, names=None):
