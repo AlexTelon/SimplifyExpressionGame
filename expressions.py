@@ -17,6 +17,9 @@ for variables in itertools.chain(itertools.product([True, False, 'a', 'b'], repe
                 exp = f"{unary[0]}{variables[0]} {binary} {unary[1]}{variables[1]}"
                 _all_possible_expressions.append(exp)
 
+                # also add expressions of the form: 'not (a or b)'
+                exp = f"not ({unary[0]}{variables[0]} {binary} {unary[1]}{variables[1]})"
+                _all_possible_expressions.append(exp)
 
 
 def generate_expression():
