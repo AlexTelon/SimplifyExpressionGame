@@ -24,6 +24,7 @@ def create_user_input_box():
 if __name__ == '__main__':
     BLACK = (0, 0, 0)
     WHITE = (255, 255, 255)
+    RED = (255, 0, 0)
 
     pg.init()
 
@@ -66,18 +67,21 @@ if __name__ == '__main__':
 
         else:
             user_input.update(events)
-            screen.blit(user_input.get_surface(), (10, 10))
+            screen.blit(user_input.get_surface(), (10, 100))
 
+
+        label = problem_description_font.render("Rewrite into simplest form:", 1, WHITE)
+        screen.blit(label, (10, 10))
 
         label = problem_description_font.render(example_text, 1, WHITE)
-        screen.blit(label, (10, 100))
+        screen.blit(label, (10, 70))
         
         score_label = problem_description_font.render(f"{score=}/{attempts}", 1, WHITE)
-        screen.blit(score_label, (10, 150))
+        screen.blit(score_label, (10, 170))
 
         if error_reason:
-            error_reason_label = problem_description_font.render(f"{error_reason}", 1, WHITE)
-            screen.blit(error_reason_label, (10, 170))
+            error_reason_label = problem_description_font.render(f"{error_reason}", 1, RED)
+            screen.blit(error_reason_label, (10, 190))
 
 
         pg.display.update()
