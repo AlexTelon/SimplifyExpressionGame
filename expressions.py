@@ -3,21 +3,37 @@ import random
 
 _error_reason = ""
 
+_all_possible_expressions = []
+for variables in itertools.product([True, False, 'a', 'b'], repeat=2):
+    for unary in itertools.product(['not ', ''], repeat=2):
+        for binary in ['or', 'and']:
+            _all_possible_expressions.append(f"{unary[0]}{variables[0]} {binary} {unary[1]}{variables[1]}")
+
+
 def generate_expression():
-    def random_negation():
-        """Gives not or nothing"""
-        return random.choice(['not ', ''])
+    return random.choice(_all_possible_expressions)
 
-    def random_and_or_or():
-        """Gives and or or"""
-        return random.choice(['or', 'and'])
 
-    def random_variable():
-        return random.choice(['a', 'b', 'True', 'False'])
+def classify_all_possible_expressions():
+    # take all possible expressions that the user can be tasked with.
+    # Create a dictionary of equivalent ones.
+    # True, True and True, False or True, etc
+    # We want to find all expressions that are always True, False and others such that we can always inform the user if a simpler form is possible.
 
-    expression = f"{random_negation()}{random_variable()} {random_and_or_or()} {random_negation()}{random_variable()}"
-    # TODO add ()
-    return expression
+    # Solution 1:
+    # Start with an expression True, then apply different rules to it such that a bunch of resonably longer forms are found.
+
+    # Solution 2:
+    # Make the generator of expressions one based on a full list of expressions and it returns a random one of those.
+    # That way we can go over each possible expression one by one.
+    # Then using a truth table find all equivalence classes.
+
+    def expressions():
+        pass
+
+    pass
+    
+
 
 def expressions_are_logically_same(original, suggestion, names=None):
     """Tests if two expressions are the same using a truth table."""
