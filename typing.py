@@ -37,6 +37,7 @@ if __name__ == '__main__':
     error_reason = ""
 
     score = 0
+    attempts = 0
     while True:
         screen.fill(BLACK)
 
@@ -47,10 +48,11 @@ if __name__ == '__main__':
 
         keys = pg.key.get_pressed()
 
-        if keys[pg.K_KP_ENTER]:
+        if keys[pg.K_KP_ENTER] and user_input.input_string != "":
             if user_input.input_string == "quit":
                 exit()
 
+            attempts += 1
             if verify():
                 score += 1
                 example_text = get_next_example()
@@ -68,7 +70,7 @@ if __name__ == '__main__':
         label = problem_description_font.render(example_text, 1, WHITE)
         screen.blit(label, (10, 100))
         
-        score_label = problem_description_font.render(f"{score=}", 1, WHITE)
+        score_label = problem_description_font.render(f"{score=}/{attempts}", 1, WHITE)
         screen.blit(score_label, (10, 150))
 
         if error_reason:
